@@ -1,4 +1,9 @@
-import 'package:flutter/cupertino.dart';
+// Try to use material.dart over cupertino.dart, there are some minor differences between the two
+import 'package:flutter/material.dart';
+// In fact a good practice is to import all three.
+// import 'package:flutter/cupertino.dart'; // Cupertino is IOS mechanics
+// import 'package:flutter/material.dart'; // Material is android mechanics
+// import 'package:flutter/foundation.dart'; // Foundation is the base library
 
 enum CardSuit {
   spades,
