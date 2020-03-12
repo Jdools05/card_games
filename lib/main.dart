@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cardgames/playingCard.dart' as prefix0;
 import 'package:flutter/material.dart';
 
 import 'playingCard.dart';
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Card Games',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.lightBlue,
         primaryColorDark: Colors.grey,
       ),
       home: MyHomePage(title: 'Card Games'),
@@ -49,12 +48,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  int rand = 0;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
-      rand = Random().nextInt(allCards.length);
     });
   }
 
@@ -70,10 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset('assets/2C.png', scale: 8),
-                Text(
-                  'This is your card: ${allCards[rand].cardType} of ${allCards[rand].cardSuit}',
-                ),
                 Text(
                   'This is my first time using Flutter',
                 ),
@@ -84,9 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   '$_counter',
                   style: Theme.of(context).textTheme.display1,
                 ),
+                Checkbox(
+                  value: false,
+                  onChanged: (bool newVal) {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => new SolitairePage(),
+                    ));
+                  },
+                ),
               ],
             ),
-          ),// This trailing comma makes auto-formatting nicer for build methods.
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -96,4 +98,53 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+}
+
+class SolitairePage extends StatefulWidget {
+  SolitairePage({Key key}) : super(key: key);
+
+  @override
+  _SolitairePageState createState() => _SolitairePageState();
+}
+
+
+class _SolitairePageState extends State<SolitairePage> {
+  
+  int _rand = 0;
+  
+  void randomizeCard() {
+    setState(() {
+      _rand = Random().nextInt(allCards.length);
+    });
+  }
+  
+  @override
+  Widget build (BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: Text('Solitare'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                allCards[_rand].image,
+                Text(
+                  'This is your card: ${allCards[_rand].cardType} of ${allCards[_rand].cardSuit}',
+                ),
+              ]
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: randomizeCard,
+        tooltip: 'Random Card',
+        child: Icon(Icons.swap_calls),
+      ),
+    );
+  }
+
 }
