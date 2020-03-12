@@ -1,7 +1,8 @@
 import 'dart:math';
 
+import 'package:cardgames/provider_widget.dart';
 import 'package:flutter/material.dart';
-import 'solitairePage.dart';
+import 'solitaire_page.dart';
 
 
 void main() => runApp(MyApp());
@@ -11,13 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Card Games',
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        primaryColorDark: Colors.grey,
+    return ProviderWidget(
+      child: MaterialApp(
+        title: 'Card Games',
+        theme: ThemeData(
+          primarySwatch: Colors.lightBlue,
+          primaryColorDark: Colors.grey,
+        ),
+        home: MyHomePage(title: 'Card Games'),
       ),
-      home: MyHomePage(title: 'Card Games'),
     );
   }
 }
