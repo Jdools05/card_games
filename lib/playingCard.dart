@@ -90,7 +90,7 @@ String findAsset(CardSuit s, CardType t) {
       str += 'C';
       break;
   }
-  return 'assets/' + str + '.png';
+  return 'assets/cards/' + str + '.png';
 }
 
 class PlayingCard {

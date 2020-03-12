@@ -1,19 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'solitairePage.dart';
 
-import 'playingCard.dart';
 
 void main() => runApp(MyApp());
-
-List<PlayingCard> allCards = [];
 
 class MyApp extends StatelessWidget {
 
 
   @override
   Widget build(BuildContext context) {
-    populateCards();
     return MaterialApp(
       title: 'Card Games',
       theme: ThemeData(
@@ -22,18 +19,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Card Games'),
     );
-  }
-
-  void populateCards() {
-    CardSuit.values.forEach((suit){
-      CardType.values.forEach((type) {
-        allCards.add(new PlayingCard(
-          cardType: type,
-          cardSuit: suit,
-          faceUp: false,
-        ));
-      });
-    });
   }
 }
 
@@ -62,31 +47,54 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'This is my first time using Flutter',
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+            gradient: new LinearGradient(colors: [Colors.red, Colors.cyan])
+          ),
+          child: AspectRatio(
+            aspectRatio: 6 / 2,
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'This is my first time using Flutter',
+                    ),
+                    Text(
+                      'You have pushed the button this many times:',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.yellow,
+                      ),
+                    ),
+                    Text(
+                      '$_counter',
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                    FlatButton(
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      disabledColor: Colors.grey,
+                      disabledTextColor: Colors.black,
+                      padding: EdgeInsets.all(8.0),
+                      splashColor: Colors.blueAccent,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => SolitairePage()),
+                        );
+                      },
+                      child: Text(
+                        "Go To Solitaire",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    )
+                  ],
                 ),
-                Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.display1,
-                ),
-                Checkbox(
-                  value: false,
-                  onChanged: (bool newVal) {
-                    Navigator.push(
-                      context,
-                      new MaterialPageRoute(builder: (context) => new SolitairePage(),
-                    ));
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -98,53 +106,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
-
-class SolitairePage extends StatefulWidget {
-  SolitairePage({Key key}) : super(key: key);
-
-  @override
-  _SolitairePageState createState() => _SolitairePageState();
-}
-
-
-class _SolitairePageState extends State<SolitairePage> {
-  
-  int _rand = 0;
-  
-  void randomizeCard() {
-    setState(() {
-      _rand = Random().nextInt(allCards.length);
-    });
-  }
-  
-  @override
-  Widget build (BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: Text('Solitare'),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                allCards[_rand].image,
-                Text(
-                  'This is your card: ${allCards[_rand].cardType} of ${allCards[_rand].cardSuit}',
-                ),
-              ]
-            ),
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: randomizeCard,
-        tooltip: 'Random Card',
-        child: Icon(Icons.swap_calls),
-      ),
-    );
-  }
-
 }
