@@ -36,6 +36,7 @@ class SolitaireProvider with ChangeNotifier {
 
   void randomizeCard() {
     _rand = random.nextInt(allCards.length);
+    notifyListeners();
   }
 
   void populateCards() {
@@ -59,6 +60,15 @@ class SolitaireProvider with ChangeNotifier {
         }
       }
     }
+
+    cardDeckClosed = allCards;
+    cardDeckOpened.add(
+      cardDeckClosed.removeLast()
+          ..opened = true
+          ..faceUp = true
+    );
+
+    notifyListeners();
   }
 
   List<PlayingCard> get allCards => _allCards;

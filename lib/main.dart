@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cardgames/provider_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'solitaire_page.dart';
 
 
@@ -12,6 +13,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return ProviderWidget(
       child: MaterialApp(
         title: 'Card Games',
@@ -46,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amber,
       appBar: AppBar(
         title: Text(widget.title),
       ),
