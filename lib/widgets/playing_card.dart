@@ -1,31 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class PlayingCard extends StatefulWidget {
+class PlayingCardWidget extends StatefulWidget {
   final double width;
   final double height;
-  final CardSuit suit;
-  final CardValue value;
+  final PlayingCard card;
+  final VoidCallback onTap;
 
-  bool faceUp;
-  bool opened;
-
-  PlayingCard({Key key, this.width: 50, this.height: 70, this.opened: false, this.faceUp: false, @required this.suit, @required this.value}) : super(key: key);
+  PlayingCardWidget({Key key, this.width: 50, this.height: 70, @required this.card, this.onTap}) : super(key: key);
+  bool get faceUp => card.faceUp;
+  bool get opened => card.opened;
 
   @override
-  _PlayingCardState createState() => _PlayingCardState(value: value, suit: suit);
+  _PlayingCardWidgetState createState() => _PlayingCardWidgetState(card: card);
 }
 
-class _PlayingCardState extends State<PlayingCard> {
-  final CardSuit suit;
-  final CardValue value;
+class _PlayingCardWidgetState extends State<PlayingCardWidget> {
+  final PlayingCard card;
 
-  _PlayingCardState({this.suit, this.value});
+  _PlayingCardWidgetState({this.card});
 
   @override Widget build(BuildContext context) {
     var size = Size(widget.width, widget.height);
-    var image = Image.asset("assets/cards/${suit.name}.png", fit: BoxFit.fitWidth, width: size.width / 5);
+    var image = Image.asset("assets/cards/${card.suit.name}.png", fit: BoxFit.fitWidth, width: size.width / 5);
     var micro = size.width / 10;
 
     return Container(
@@ -35,21 +32,45 @@ class _PlayingCardState extends State<PlayingCard> {
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.all(Radius.circular(3)),
       ),
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: micro,
-            left: micro,
-            child: image,
-          ),
-          Center(child: Text(value.name, style: Theme.of(context).textTheme.caption,)),
-          Positioned(
-            bottom: micro,
-            right: micro,
-            child: image,
-          )
-        ],
+      child: GestureDetector(
+        onTap: widget.onTap ?? () => setState(() => card.faceUp = !card.faceUp),
+        child: card.faceUp ? Stack(
+          children: <Widget>[
+            Positioned(
+              top: micro,
+              left: micro,
+              child: image,
+            ),
+            Center(child: Text(card.value.name, style: Theme.of(context).textTheme.caption,)),
+            Positioned(
+              bottom: micro,
+              right: micro,
+              child: image,
+            )
+          ],
+        ) : Image.asset("assets/cards/yellow_back.png"),
       ),
+    );
+  }
+}
+
+class PlayingCard {
+  final CardSuit suit;
+  final CardValue value;
+  bool faceUp;
+  bool opened;
+
+  PlayingCard({@required this.suit, @required this.value, this.faceUp: false, this.opened: false});
+
+  void flip() => faceUp = !faceUp;
+  void open() => opened = true;
+
+  PlayingCardWidget toWidget({double width: 50, double height: 70, VoidCallback onTap}) {
+    return PlayingCardWidget(
+      card: this,
+      width: width,
+      height: height,
+      onTap: onTap ?? () {},
     );
   }
 }

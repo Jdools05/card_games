@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:cardgames/providers/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'pages/solitaire_page.dart';
+import 'animation_demo.dart';
+import 'solitaire_page.dart';
 
 
 void main() => runApp(MyApp());
@@ -42,6 +43,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -54,6 +64,13 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.amber,
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add_to_home_screen),
+            onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => AnimationDemo())),
+          )
+        ],
       ),
       body: Center(
         child: Container(

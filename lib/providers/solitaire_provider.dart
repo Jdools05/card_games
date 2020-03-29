@@ -45,7 +45,7 @@ class SolitaireProvider with ChangeNotifier {
         allCards.add(new PlayingCard(
           value: value,
           suit: suit,
-          faceUp: false,
+          faceUp: true,
         ));
       });
     });
@@ -56,7 +56,7 @@ class SolitaireProvider with ChangeNotifier {
         if (w >= i) {
           int randomInt = random.nextInt(allCards.length);
           PlayingCard card = allCards[randomInt];
-          cardColumns[i].add(card..opened = true);
+          cardColumns[i].add(card..open());
           allCards.removeAt(randomInt);
         }
       }
@@ -65,8 +65,8 @@ class SolitaireProvider with ChangeNotifier {
     unknownCards = allCards;
     cardDeckOpened.add(
       unknownCards.removeLast()
-          ..opened = true
-          ..faceUp = true
+          ..open()
+          ..flip()
     );
 
     cardColumns.forEach((column) {

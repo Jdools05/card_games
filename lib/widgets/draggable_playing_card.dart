@@ -3,28 +3,38 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class DraggablePlayingCard extends StatefulWidget {
-  final PlayingCard card;
+  final PlayingCardWidget card;
   final VoidCallback onDragStarted;
   final DragEndCallback onDragEnd;
   final VoidCallback onDragCompleted;
   final DraggableCanceledCallback onDraggableCancelled;
   final DraggablePlayingCard data;
+  final Widget childWhileDragging;
 
-  DraggablePlayingCard({Key key, @required this.card, this.onDragStarted, this.onDragEnd, this.onDragCompleted, this.onDraggableCancelled, this.data}) : super(key: key);
+  DraggablePlayingCard({
+    Key key,
+    @required this.card,
+    this.onDragStarted,
+    this.onDragEnd,
+    this.onDragCompleted,
+    this.onDraggableCancelled,
+    this.data,
+    this.childWhileDragging,
+  }) : super(key: key);
 
   @override
   _DraggablePlayingCardState createState() => _DraggablePlayingCardState(card: card);
 }
 
 class _DraggablePlayingCardState extends State<DraggablePlayingCard> {
-  PlayingCard card;
+  PlayingCardWidget card;
   _DraggablePlayingCardState({this.card});
 
   @override
   Widget build(BuildContext context) {
     return Draggable<DraggablePlayingCard>(
       data: widget.data ?? widget,
-      childWhenDragging: Container(
+      childWhenDragging: widget.childWhileDragging ?? Container(
         width: card.width,
         height: card.height,
         decoration: BoxDecoration(
