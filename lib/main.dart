@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:cardgames/provider_widget.dart';
+import 'package:cardgames/providers/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'solitaire_page.dart';
+import 'pages/solitaire_page.dart';
 
 
 void main() => runApp(MyApp());

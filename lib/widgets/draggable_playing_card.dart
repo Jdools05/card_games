@@ -1,4 +1,4 @@
-import 'package:cardgames/playing_card.dart';
+import 'package:cardgames/widgets/playing_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +18,6 @@ class DraggablePlayingCard extends StatefulWidget {
 
 class _DraggablePlayingCardState extends State<DraggablePlayingCard> {
   PlayingCard card;
-  double _scale = 1.0;
   _DraggablePlayingCardState({this.card});
 
   @override

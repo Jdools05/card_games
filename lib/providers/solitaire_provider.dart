@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:cardgames/playing_card.dart';
-import 'package:cardgames/provider_widget.dart';
+import 'package:cardgames/widgets/playing_card.dart';
+import 'package:cardgames/providers/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ class SolitaireProvider with ChangeNotifier {
   Random random;
 
   SolitaireProvider({@required this.random}) {
-   populateCards();
+    populateCards();
   }
 
   List<PlayingCard> _allCards = [];
@@ -18,7 +18,7 @@ class SolitaireProvider with ChangeNotifier {
 // each list is a column in the solitaire field
   List<List<PlayingCard>> _cardColumns = List.filled(7, []);
 
-  List<PlayingCard> _cardDeckClosed = [];
+  List<PlayingCard> _unknownCards = [];
   List<PlayingCard> _cardDeckOpened = [];
 
   List<PlayingCard> _finalHeartDeck = [];
@@ -49,6 +49,7 @@ class SolitaireProvider with ChangeNotifier {
         ));
       });
     });
+    shuffle(allCards);
 
     for (int i = 0; i < 7; i++) {
       for (int w = 0; w < 7; w++) {
@@ -61,9 +62,9 @@ class SolitaireProvider with ChangeNotifier {
       }
     }
 
-    cardDeckClosed = allCards;
+    unknownCards = allCards;
     cardDeckOpened.add(
-      cardDeckClosed.removeLast()
+      unknownCards.removeLast()
           ..opened = true
           ..faceUp = true
     );
@@ -117,11 +118,20 @@ class SolitaireProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<PlayingCard> get cardDeckClosed => _cardDeckClosed;
-  set cardDeckClosed(List<PlayingCard> value) {
-    _cardDeckClosed = value;
+  List<PlayingCard> get unknownCards => _unknownCards;
+  set unknownCards(List<PlayingCard> value) {
+    _unknownCards = value;
     notifyListeners();
   }
 
+  void removeLastCard() {
+    _unknownCards.removeLast();
+    notifyListeners();
+  }
+
+  void shuffle(List<PlayingCard> cards) {
+    for (int i = 0; i < 7; i++) cards.shuffle(random);
+    notifyListeners();
+  }
 
 }

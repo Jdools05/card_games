@@ -1,9 +1,10 @@
-import 'package:cardgames/playing_card.dart';
-import 'package:cardgames/playing_card_drag_target.dart';
-import 'package:cardgames/provider_widget.dart';
+import 'package:cardgames/widgets/draggable_playing_card.dart';
+import 'package:cardgames/widgets/playing_card.dart';
+import 'package:cardgames/widgets/playing_card_drag_target.dart';
+import 'package:cardgames/providers/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cardgames/solitaire_provider.dart';
+import 'package:cardgames/providers/solitaire_provider.dart';
 
 class SolitairePage extends StatefulWidget {
 
@@ -47,7 +48,18 @@ class _SolitairePageState extends State<SolitairePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     direction: Axis.horizontal,
                     children: [
-                      Flexible(flex: 1, child: Stack(children: pageProvider.cardDeckClosed,)),
+                      Flexible(flex: 1, child: Builder(
+                        builder: (context) => DraggablePlayingCard(
+                          card: pageProvider.unknownCards.last,
+                          onDragEnd: (d) {
+                            if (d.wasAccepted) {
+                              print("Card accepted");
+                              pageProvider.removeLastCard();
+                            }
+                          },
+                        ),
+                      )),
+                      Flexible(flex: 1, child: PlayingCardDragTarget(child: cont)),
                       Spacer(),
                       ...List.filled(4, Flexible(flex: 1, child: PlayingCardDragTarget(child: cont))),
                     ],
@@ -63,6 +75,7 @@ class _SolitairePageState extends State<SolitairePage> {
                     ],
                   ),
                 ),
+                pageProvider.cardColumns[0][0],
               ],
             )
           );

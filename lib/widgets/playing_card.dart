@@ -11,7 +11,7 @@ class PlayingCard extends StatefulWidget {
   bool faceUp;
   bool opened;
 
-  PlayingCard({Key key, this.width: 50, this.faceUp: false, this.opened: false, this.height: 70, @required this.suit, @required this.value}) : super(key: key);
+  PlayingCard({Key key, this.width: 50, this.height: 70, this.opened: false, this.faceUp: false, @required this.suit, @required this.value}) : super(key: key);
 
   @override
   _PlayingCardState createState() => _PlayingCardState(value: value, suit: suit);
@@ -25,7 +25,7 @@ class _PlayingCardState extends State<PlayingCard> {
 
   @override Widget build(BuildContext context) {
     var size = Size(widget.width, widget.height);
-    var image = Image.asset("assets/${suit.name}.png", fit: BoxFit.fitWidth, width: size.width / 5);
+    var image = Image.asset("assets/cards/${suit.name}.png", fit: BoxFit.fitWidth, width: size.width / 5);
     var micro = size.width / 10;
 
     return Container(
@@ -63,7 +63,7 @@ enum CardSuit {
 
 extension metadata on CardSuit {
   static const Map<CardSuit, String> names = {
-    CardSuit.diamonds: "Diamond",
+    CardSuit.diamonds: "Diamonds",
     CardSuit.hearts: "Hearts",
     CardSuit.spades: "Spades",
     CardSuit.clubs: "Clubs",

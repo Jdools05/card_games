@@ -1,4 +1,4 @@
-import 'package:cardgames/draggable_playing_card.dart';
+import 'package:cardgames/widgets/draggable_playing_card.dart';
 import 'package:flutter/material.dart';
 
 class PlayingCardDragTarget extends StatefulWidget {
