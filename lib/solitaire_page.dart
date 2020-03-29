@@ -1,4 +1,5 @@
-import 'package:cardgames/playingcard.dart';
+import 'package:cardgames/playing_card.dart';
+import 'package:cardgames/playing_card_drag_target.dart';
 import 'package:cardgames/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,14 @@ class SolitairePage extends StatefulWidget {
 
 class _SolitairePageState extends State<SolitairePage> {
 
-  bool accepted = false;
+  final cont = Container(
+    width: 50,
+    height: 70,
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.all(Radius.circular(3)),
+      color: Colors.blue,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -30,63 +38,33 @@ class _SolitairePageState extends State<SolitairePage> {
             appBar: AppBar(
               title: Text('Solitare'),
             ),
-            body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              color: Colors.grey,
-                              width: 200,
-                              height: 100,
-                            ),
-                            Container(
-                              color: Colors.pink,
-                              width: 200,
-                              height: 100,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              color: Colors.blue,
-                              width: 100,
-                              height: 100,
-                              child: Text(
-                                'World',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Container(
-                              color: Colors.blue,
-                              width: 100,
-                              height: 100,
-                              child: Text(
-                                'World',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox.fromSize(
+                  size: Size.fromHeight(80),
+                  child: Flex(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    direction: Axis.horizontal,
+                    children: [
+                      Flexible(flex: 1, child: Stack(children: pageProvider.cardDeckClosed,)),
+                      Spacer(),
+                      ...List.filled(4, Flexible(flex: 1, child: PlayingCardDragTarget(child: cont))),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+                SizedBox.fromSize(
+                  size: Size.fromHeight(120),
+                  child: Flex(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    direction: Axis.horizontal,
+                    children: [
+                      ...List.filled(7, Flexible(flex: 1, child: PlayingCardDragTarget(child: cont))),
+                    ],
+                  ),
+                ),
+              ],
+            )
           );
         },
       ),

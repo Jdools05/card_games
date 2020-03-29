@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+//    SystemChrome.setPreferredOrientations([
+//      DeviceOrientation.portraitUp,
+//      DeviceOrientation.portraitDown,
+//    ]);
     return ProviderWidget(
       child: MaterialApp(
         title: 'Card Games',
@@ -62,47 +62,44 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
             gradient: new LinearGradient(colors: [Colors.red, Colors.cyan])
           ),
-          child: AspectRatio(
-            aspectRatio: 6 / 2,
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'This is my first time using Flutter',
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'This is my first time using Flutter',
+                  ),
+                  Text(
+                    'You have pushed the button this many times:',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.yellow,
                     ),
-                    Text(
-                      'You have pushed the button this many times:',
-                      style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.yellow,
-                      ),
+                  ),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    disabledColor: Colors.grey,
+                    disabledTextColor: Colors.black,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.blueAccent,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => SolitairePage()),
+                      );
+                    },
+                    child: Text(
+                      "Go To Solitaire",
+                      style: TextStyle(fontSize: 20.0),
                     ),
-                    Text(
-                      '$_counter',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                    FlatButton(
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                      disabledColor: Colors.grey,
-                      disabledTextColor: Colors.black,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: Colors.blueAccent,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          new MaterialPageRoute(builder: (context) => SolitairePage()),
-                        );
-                      },
-                      child: Text(
-                        "Go To Solitaire",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ),

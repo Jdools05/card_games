@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:cardgames/playingcard.dart';
+import 'package:cardgames/playing_card.dart';
 import 'package:cardgames/provider_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,10 +41,10 @@ class SolitaireProvider with ChangeNotifier {
 
   void populateCards() {
     CardSuit.values.forEach((suit) {
-      CardType.values.forEach((type) {
+      CardValue.values.forEach((value) {
         allCards.add(new PlayingCard(
-          cardType: type,
-          cardSuit: suit,
+          value: value,
+          suit: suit,
           faceUp: false,
         ));
       });
