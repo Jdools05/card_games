@@ -124,8 +124,8 @@ class SolitaireProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeLastCard() {
-    _unknownCards.removeLast();
+  void removeLastCard(List<PlayingCard> list) {
+    list.removeLast();
     notifyListeners();
   }
 

@@ -48,7 +48,7 @@ class _PlayingCardWidgetState extends State<PlayingCardWidget> {
               child: image,
             )
           ],
-        ) : Image.asset("assets/cards/yellow_back.png"),
+        ) : Image.asset("assets/cards/yellow_back.png", width: 50, height: 70),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cardgames/widgets/animated_flippable_widget.dart';
 import 'package:cardgames/widgets/draggable_playing_card.dart';
 import 'package:cardgames/widgets/playing_card.dart';
 import 'package:cardgames/widgets/playing_card_drag_target.dart';
@@ -17,7 +20,9 @@ class SolitairePage extends StatefulWidget {
 }
 
 
-class _SolitairePageState extends State<SolitairePage> {
+class _SolitairePageState extends State<SolitairePage> with SingleTickerProviderStateMixin {
+
+  AnimationController _controller;
 
   final cont = Container(
     width: 50,
@@ -30,15 +35,18 @@ class _SolitairePageState extends State<SolitairePage> {
 
   @override
   void initState(){
-    super.initState();
+    _controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitDown,
       DeviceOrientation.portraitUp,
     ]);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var unknownDeck = _getFaceDownDeck(context);
+    var openDeck = _getFaceUpDeck(context);
     return ChangeNotifierProvider<SolitaireProvider>(
       create: (context) => SolitaireProvider(random: Provider.of<MainProvider>(context, listen: false).random),
       child: Builder(
@@ -48,87 +56,74 @@ class _SolitairePageState extends State<SolitairePage> {
             backgroundColor: Colors.lightGreen,
             appBar: AppBar(
               title: Text('Solitare'),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox.fromSize(
-                  size: Size.fromHeight(80),
-                  child: Flex(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    direction: Axis.horizontal,
-                    children: [
-                      Flexible(flex: 1, child: Builder(
-                        builder: (context) {
-                          var card = pageProvider.unknownCards.last.toWidget();
-                          return DraggablePlayingCard(
-                            childWhileDragging: Image.asset('assets/cards/yellow_back.png'),
-                            key: ValueKey(card.card.suit.name + card.card.value.name),
-                            card: pageProvider.unknownCards.last.toWidget(),
-                            onDragEnd: (d) {
-                              if (d.wasAccepted) {
-                                print("Card accepted");
-                                pageProvider.removeLastCard();
-                              }
-                            },
-                          );
-                        }
-                      )),
-                      Flexible(flex: 1, child: PlayingCardDragTarget(child: cont)),
-                      Spacer(),
-                      ...List.filled(4, Flexible(flex: 1, child: PlayingCardDragTarget(child: cont))),
-                    ],
-                  ),
-                ),
-                SizedBox.fromSize(
-                  size: Size.fromHeight(120),
-                  child: Flex(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    direction: Axis.horizontal,
-                    children: [
-                      ...List.filled(7, Flexible(flex: 1, child: PlayingCardDragTarget(child: cont))),
-                    ],
-                  ),
-                ),
+              actions: <Widget>[
+                FlatButton(onPressed: () {
+                  if (_controller.status == AnimationStatus.dismissed) _controller.forward();
+                  else if (_controller.status == AnimationStatus.completed) _controller.reverse();
+                },
+                  child: Text("Flip Card")
+                )
               ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: LayoutBuilder(
+                builder: (context, constraints) => Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Positioned(
+                      top: 0,
+                      left: 50,
+                      child: unknownDeck,
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 60,
+                      child: openDeck,
+                    )
+                  ].reversed.toList(),
+                ),
+              ),
             )
           );
         },
       ),
     );
   }
+
+  Widget _getFaceDownDeck(BuildContext context) {
+    return Consumer<SolitaireProvider>(
+      builder: (context, pageProvider, child) {
+        PlayingCard currentCard = pageProvider.unknownCards.last;
+        return AnimatedFlippableWidget(
+          alignment: Alignment.centerLeft,
+          key: ValueKey(currentCard.suit.name + currentCard.value.value),
+          builder: (context, rotationZ, offset) {
+            currentCard.faceUp = rotationZ.value < -3*pi/2;
+            if (_controller.status == AnimationStatus.completed) {
+              pageProvider.cardDeckOpened.add(currentCard);
+              pageProvider.removeLastCard(pageProvider.unknownCards);
+              print("Transfered card!");
+            }
+            return currentCard.toWidget();
+          },
+          position: Tween<Offset>(
+            begin: Offset.zero,
+            end: const Offset(10, 0),
+          ),
+          controller: _controller,
+        );
+      },
+    );
+  }
+
+  Widget _getFaceUpDeck(BuildContext context) {
+    return Consumer<SolitaireProvider>(
+      builder: (context, pageProvider, child) {
+        PlayingCard currentCard = pageProvider.cardDeckOpened.last;
+        currentCard.flip();
+        return currentCard.toWidget();
+      },
+    );
+  }
 }
-
-//Draggable<String>(
-//child: pageProvider.cardDeckOpened[0].image,
-//feedback: pageProvider.cardDeckOpened[0].image,
-//childWhenDragging: Container(),
-//data: 'Card',
-//),
-
-//Container(
-//child: DragTarget<String>(
-//builder: (context, List<String> candidateData, rejectedData) {
-//return accepted ? Padding(
-//padding: EdgeInsets.only(top: 100.0),
-//child: Container(
-//width: 100,
-//height: 200,
-//color: Colors.black,
-//child: pageProvider.cardDeckOpened[0].image,
-//),
-//) : Container(
-//width: 100,
-//height: 200,
-//color: Colors.blue,
-//);
-//}, onWillAccept: (data) {
-//return true;
-//}, onAccept: (data) {
-//setState(() {
-//accepted = true;
-//});
-//},
-//),
-//),
-
