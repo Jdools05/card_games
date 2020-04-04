@@ -134,4 +134,35 @@ class SolitaireProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void transferCard(PlayingCard card, List<PlayingCard> moveTo) {
+    for (int i = 0; i < 13; i++) {
+      switch (i) {
+        case 7:
+          if (unknownCards.contains(card)) unknownCards.remove(card);
+          break;
+        case 8:
+          if (cardDeckOpened.contains(card)) cardDeckOpened.remove(card);
+          break;
+        case 9:
+          if (finalClubsDeck.contains(card)) finalClubsDeck.remove(card);
+          break;
+        case 10:
+          if (finalDiamondDeck.contains(card)) finalDiamondDeck.remove(card);
+          break;
+        case 11:
+          if (finalHeartDeck.contains(card)) finalHeartDeck.remove(card);
+          break;
+        case 12:
+          if (finalSpadesDeck.contains(card)) finalSpadesDeck.remove(card);
+          break;
+        default:
+          for (int j = 0; j < cardColumns.length; j++) {
+            var column = cardColumns[j];
+            if (column.contains(card)) column.remove(card);
+          }
+      }
+    }
+    moveTo.add(card);
+  }
+
 }

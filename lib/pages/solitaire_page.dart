@@ -101,8 +101,7 @@ class _SolitairePageState extends State<SolitairePage> with SingleTickerProvider
           builder: (context, rotationZ, offset) {
             currentCard.faceUp = rotationZ.value < -3*pi/2;
             if (_controller.status == AnimationStatus.completed) {
-              pageProvider.cardDeckOpened.add(currentCard);
-              pageProvider.removeLastCard(pageProvider.unknownCards);
+              pageProvider.transferCard(currentCard, pageProvider.cardDeckOpened);
               print("Transfered card!");
             }
             return currentCard.toWidget();
